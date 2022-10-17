@@ -47,3 +47,8 @@ body {
     width: 50%;
     text-align: center;
 }
+
+#computer-result__icon,
+#player-result__icon {
+    font-size: 100px;
+}

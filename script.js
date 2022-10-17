@@ -1,12 +1,20 @@
 const rock = document.getElementById("rock");
 const paper = document.getElementById("paper");
 const scissors = document.getElementById("scissors");
+const playerResult = document.getElementById("player-result");
+const computerResult = document.getElementById("computer-result");
 const btns = Array.from(document.getElementsByTagName("button"));
 const playerScore = document.getElementById("player-score");
 const computerScore = document.getElementById("computer-score");
+const plIcon = document.getElementById("player-result__icon");
+const comIcon = document.getElementById("computer-result__icon");
+const div = document.createElement("div");
+const divClone = div.cloneNode();
 let winner;
 let playerChoice;
-let computerChoise;
+let computerChoice;
+let playerIcon;
+let computerIcon;
 
 const gameItems = {
     rock : {
@@ -30,7 +38,12 @@ const gameItems = {
 for (let btn of btns) {
     btn.addEventListener("click", (e) => {
         playerChoice = e.target.id;
-        computerChoise = getComputerChoice();
+        computerChoice = getComputerChoice();
+
+        playerIcon = gameItems[playerChoice].icon;
+        computerIcon = gameItems[computerChoice].icon;
+        plIcon.innerText = playerIcon;
+        comIcon.innerText = computerIcon;
 
         if ((playerScore.innerText < 6) && (computerScore.innerText < 6)) {
             playRound();
@@ -44,11 +57,11 @@ for (let btn of btns) {
 }
 
 function playRound() {
-    if (gameItems[playerChoice].name == gameItems[computerChoise].name) {
+    if (gameItems[playerChoice].name == gameItems[computerChoice].name) {
         winner = "no winner";
-    } else if (gameItems[playerChoice].name == gameItems[computerChoise].beat) {
+    } else if (gameItems[playerChoice].name == gameItems[computerChoice].beat) {
         winner = "computer win";
-    } else if (gameItems[playerChoice].beat == gameItems[computerChoise].name) {
+    } else if (gameItems[playerChoice].beat == gameItems[computerChoice].name) {
         winner = "player win";
     }
     console.log(winner);
@@ -61,6 +74,10 @@ function changeScore() {
         ++playerScore.innerText;
     }
 }
+
+// function appendItem(playerIcon,computerIcon) {
+//     playerResult.appendChild
+// }
 
 function getComputerChoice() {
     switch (Math.round(Math.random()*2)) {
