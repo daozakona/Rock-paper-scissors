@@ -10,6 +10,9 @@ const plIcon = document.getElementById("player-result__icon");
 const comIcon = document.getElementById("computer-result__icon");
 const div = document.createElement("div");
 const divClone = div.cloneNode();
+const declarationWinner = document.querySelector(".declare-winner");
+const declareWinnerText = document.querySelector(".declare-winner__text");
+
 let winner;
 let playerChoice;
 let computerChoice;
@@ -35,6 +38,14 @@ const gameItems = {
 
 };
 
+declarationWinner.addEventListener("click",e=> {
+    if(e.target) {
+        declarationWinner.style.visibility = "hidden";
+        computerScore.innerText = 0;
+        playerScore.innerText = 0;
+    }
+})
+
 for (let btn of btns) {
     btn.addEventListener("click", (e) => {
         playerChoice = e.target.id;
@@ -42,29 +53,48 @@ for (let btn of btns) {
 
         playerIcon = gameItems[playerChoice].icon;
         computerIcon = gameItems[computerChoice].icon;
-        plIcon.innerText = playerIcon;
-        comIcon.innerText = computerIcon;
 
-        if ((playerScore.innerText < 6) && (computerScore.innerText < 6)) {
+        if ((playerScore.innerText < 5) && (computerScore.innerText < 5)) {
             playRound();
             changeScore();
-        } else {
-            computerScore.innerText = 0;
-            playerScore.innerText = 0;
+            checkWinner();
+            
         }
-        
     })
 }
 
+function declareWinner() {
+    if(playerScore.innerText == 5) {
+        declareWinnerText.innerText = "Player win"
+        declarationWinner.style.visibility = "visible";
+        console.log(declarationWinner.style.visibility)
+    } else if(computerScore.innerText == 5) {
+        declareWinnerText.innerText = "Computer win"
+        declarationWinner.style.visibility = "visible";
+        console.log(declarationWinner.style.visibility)
+    }
+}
+
+function checkWinner() {
+    if((playerScore.innerText == 5) || (computerScore.innerText == 5)) {
+        declareWinner()
+    }
+}
+
 function playRound() {
+    plIcon.innerText = playerIcon;
+    comIcon.innerText = computerIcon;
+    comIcon.style.opacity = 1;
+    plIcon.style.opacity = 1;
     if (gameItems[playerChoice].name == gameItems[computerChoice].name) {
         winner = "no winner";
     } else if (gameItems[playerChoice].name == gameItems[computerChoice].beat) {
         winner = "computer win";
+        plIcon.style.opacity = 0.5;
     } else if (gameItems[playerChoice].beat == gameItems[computerChoice].name) {
         winner = "player win";
+        comIcon.style.opacity = 0.5;
     }
-    console.log(winner);
 }
 
 function changeScore() {
@@ -75,9 +105,6 @@ function changeScore() {
     }
 }
 
-// function appendItem(playerIcon,computerIcon) {
-//     playerResult.appendChild
-// }
 
 function getComputerChoice() {
     switch (Math.round(Math.random()*2)) {
